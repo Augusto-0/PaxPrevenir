@@ -5,7 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
     steps:
       - name: Baixar codigo do projeto
         uses: actions/checkout@v4
@@ -13,25 +12,28 @@ jobs:
       - name: Configurar Node.js (Versao Nova)
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 18
 
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: 'temurin'
+          java-version: '11'
 
       - name: Instalar dependencias na Raiz
         run: npm install
 
-      - name: Gerar Estrutura Android Oficial
+      - name: Exportar bundles do Expo
+        run: npx expo export --platform android
+
+      - name: Gerar Estrutura Android Oficial Otimizada
         run: npx expo prebuild --platform android --no-install
 
       - name: Compilar o APK de Producao Independente
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m" -Pandroid.lifecycle.compileTo17=true
+          ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx3g"
           
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
