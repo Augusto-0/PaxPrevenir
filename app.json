@@ -23,6 +23,21 @@
         "android.permission.WRITE_EXTERNAL_STORAGE"
       ],
       "package": "com.pax.prevenir"
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUseDescription": "Precisamos da sua localização para capturar o GPS da residência"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Precisamos acessar sua galeria para adicionar fotos",
+          "cameraPermission": "Precisamos da câmera para tirar fotos da residência"
+        }
+      ]
+    ]
   }
 }
