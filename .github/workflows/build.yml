@@ -20,8 +20,8 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Inicializar Estrutura Nativa Exata
-        run: npx react-native init PaxPrevenir --version 0.72.6 --skip-install
+      - name: Inicializar Estrutura Nativa com CLI Atualizada
+        run: npx @react-native-community/cli init PaxPrevenir --version 0.72.6 --skip-install
 
       - name: Organizar Pastas na Raiz
         run: |
