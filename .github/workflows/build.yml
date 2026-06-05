@@ -10,23 +10,28 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
-      - name: Configurar Java (Motor do Android)
+      - name: Configurar Java
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '11'
 
       - name: Instalar dependencias do App
         run: npm install
 
-      - name: Gerar arquivos nativos do Android
-        run: npx expo prebuild --platform android
+      - name: Inicializar Estrutura Nativa do Android
+        run: npx react-native init PaxPrevenir --version 0.72.6 --skip-install
+
+      - name: Injetar Codigo Customizado
+        run: |
+          cp App.js PaxPrevenir/App.js
+          cd PaxPrevenir
 
       - name: Compilar o APK Final
         run: |
-          cd android
+          cd PaxPrevenir/android
           chmod +x gradlew
           ./gradlew assembleDebug
 
@@ -34,4 +39,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: App-PaxPrevenir-Instalavel
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: PaxPrevenir/android/app/build/outputs/apk/debug/app-debug.apk
