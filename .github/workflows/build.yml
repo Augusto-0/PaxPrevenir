@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
     steps:
       - name: Baixar codigo do projeto
         uses: actions/checkout@v4
@@ -26,18 +27,12 @@ jobs:
       - name: Gerar Estrutura Android Oficial
         run: npx expo prebuild --platform android --no-install
 
-      - name: Forcar Unificacao da Versao do Java (JVM Target)
-        run: |
-          # Alinha as diretrizes do compilador para Java 17 em todas as subtarefas nativas
-          echo "tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { kotlinOptions { jvmTarget = '17' } }" >> android/build.gradle
-          echo "subprojects { tasks.withType(JavaCompile) { options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'; sourceCompatibility = '17'; targetCompatibility = '17' } }" >> android/build.gradle
-
       - name: Compilar o APK de Producao Independente
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease
-
+          ./gradlew assembleRelease -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m" -Pandroid.lifecycle.compileTo17=true
+          
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
         with:
