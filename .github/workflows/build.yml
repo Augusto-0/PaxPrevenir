@@ -35,6 +35,9 @@ jobs:
       - name: Criar Pasta de Assets do Android
         run: mkdir -p android/app/src/main/assets
 
+      - name: Vincular Modulos do Expo Nativamente
+        run: npx react-native link || true
+
       - name: Gerar Bundle do JavaScript Independente
         run: npx react-native bundle --platform android --dev false --entry-file App.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 
