@@ -14,5 +14,8 @@
     "expo-print": "~12.4.2",
     "expo-sharing": "~11.5.0",
     "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "@react-native/metro-config": "^0.72.11"
   }
 }
