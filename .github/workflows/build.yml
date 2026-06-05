@@ -16,10 +16,12 @@ jobs:
           java-version: '17'
           
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install --force
+          npm cache clean --force
 
-      - name: Exportar Bundles de Producao do Expo
-        run: npx expo export --platform android
+      - name: Limpar e Exportar Bundles de Producao do Expo
+        run: npx expo export --platform android --clear
         
       - name: Create keystore
         run: |
@@ -30,7 +32,6 @@ jobs:
           npx expo prebuild --platform android --no-install
           cd android
           chmod +x gradlew
-          # Passa as credenciais da chave criada diretamente para o compilador do Android
           ./gradlew assembleRelease \
             -Pandroid.injected.signing.store.file=/home/runner/work/PaxPrevenir/PaxPrevenir/my-release-key.keystore \
             -Pandroid.injected.signing.store.password=password \
