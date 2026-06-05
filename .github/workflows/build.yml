@@ -32,11 +32,15 @@ jobs:
       - name: Instalar dependencias na Raiz
         run: npm install
 
+      - name: Configurar Pontes Nativas do Expo no Android
+        run: |
+          # Adiciona o suporte aos pacotes do Expo na raiz do build do Android
+          echo "apply from: new File([\"node\", \"--print\", \"require.resolve('expo-modules-core/package.json')\"].execute(null, null).text.trim(), \"../android/expo.gradle\")" >> android/build.gradle
+          # Ativa o autolinking no arquivo de configuracoes do projeto
+          sed -i '2i apply from: new File(["node", "--print", "require.resolve(\"expo-modules-core/package.json\")"].execute(null, null).text.trim(), "../android/settings_expo.gradle")' android/settings.gradle
+
       - name: Criar Pasta de Assets do Android
         run: mkdir -p android/app/src/main/assets
-
-      - name: Vincular Modulos do Expo Nativamente
-        run: npx react-native link || true
 
       - name: Gerar Bundle do JavaScript Independente
         run: npx react-native bundle --platform android --dev false --entry-file App.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
