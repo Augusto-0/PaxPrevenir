@@ -9,32 +9,29 @@ jobs:
       - name: Baixar codigo do projeto
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js (Versao Nova)
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          distribution: 'zulu'
+          java-version: '17'
 
       - name: Instalar dependencias na Raiz
         run: npm install
 
-      - name: Exportar bundles do Expo
-        run: npx expo export --platform android
-
-      - name: Gerar Estrutura Android Oficial Otimizada
+      - name: Gerar Estrutura Android Oficial
         run: npx expo prebuild --platform android --no-install
 
       - name: Compilar o APK de Producao Independente
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx3g"
-          
+          ./gradlew assembleRelease
+
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
         with:
