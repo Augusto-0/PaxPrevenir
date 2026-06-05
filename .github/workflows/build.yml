@@ -26,11 +26,9 @@ jobs:
       - name: Gerar Estrutura Android Oficial
         run: npx expo prebuild --platform android --no-install
 
-      - name: Compilar o APK de Producao Independente
+      - name: Compilar o APK Usando Ferramenta Oficial do Expo
         run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleRelease
+          npx expo run:android --variant release --no-dev --no-packager
 
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
