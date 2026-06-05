@@ -20,31 +20,11 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Inicializar Estrutura Nativa com CLI Atualizada
-        run: npx @react-native-community/cli init PaxPrevenir --version 0.72.6 --skip-install
-
-      - name: Organizar Pastas na Raiz
-        run: |
-          mv PaxPrevenir/android ./android
-          mv PaxPrevenir/ios ./ios
-          rm -rf PaxPrevenir
-
       - name: Instalar dependencias na Raiz
         run: npm install
 
-      - name: Configurar Pontes Nativas do Expo no Android
-        run: |
-          # Injeta a configuracao no build.gradle usando aspas simples para evitar quebras
-          echo "apply from: new File(['node', '--print', 'require.resolve(\"expo-modules-core/package.json\")'].execute(null, null).text.trim(), '../android/expo.gradle')" >> android/build.gradle
-          
-          # Remove a linha que deu erro e injeta a configuracao correta no settings.gradle
-          echo "apply from: new File(['node', '--print', 'require.resolve(\"expo-modules-core/package.json\")'].execute(null, null).text.trim(), '../android/settings_expo.gradle')" >> android/settings.gradle
-
-      - name: Criar Pasta de Assets do Android
-        run: mkdir -p android/app/src/main/assets
-
-      - name: Gerar Bundle do JavaScript Independente
-        run: npx react-native bundle --platform android --dev false --entry-file App.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+      - name: Gerar Estrutura Android Oficial e Autolinkada
+        run: npx expo prebuild --platform android --no-install
 
       - name: Compilar o APK de Producao Independente
         run: |
