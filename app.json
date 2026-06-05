@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "PAX PREVENIR",
-    "slug": "pax-prevenir",
+    "slug": "paxprevenir",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -9,9 +9,8 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Precisamos da sua localização para capturar o GPS da residência",
-        "NSCameraUsageDescription": "Precisamos da câmera para tirar fotos da residência",
-        "NSPhotoLibraryUsageDescription": "Precisamos acessar sua galeria para adicionar fotos"
+        "NSLocationWhenInUseUsageDescription": "Precisamos da localização para capturar o GPS",
+        "NSCameraUsageDescription": "Precisamos da câmera para tirar fotos"
       }
     },
     "android": {
@@ -23,21 +22,6 @@
         "android.permission.WRITE_EXTERNAL_STORAGE"
       ],
       "package": "com.pax.prevenir"
-    },
-    "plugins": [
-      [
-        "expo-location",
-        {
-          "locationWhenInUseDescription": "Precisamos da sua localização para capturar o GPS da residência"
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Precisamos acessar sua galeria para adicionar fotos",
-          "cameraPermission": "Precisamos da câmera para tirar fotos da residência"
-        }
-      ]
-    ]
+    }
   }
 }
