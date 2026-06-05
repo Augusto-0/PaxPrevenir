@@ -23,8 +23,14 @@ jobs:
       - name: Instalar dependencias na Raiz
         run: npm install
 
-      - name: Gerar Estrutura Android Oficial e Autolinkada
+      - name: Gerar Estrutura Android Oficial
         run: npx expo prebuild --platform android --no-install
+
+      - name: Forcar Unificacao da Versao do Java (JVM Target)
+        run: |
+          # Alinha as diretrizes do compilador para Java 17 em todas as subtarefas nativas
+          echo "tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { kotlinOptions { jvmTarget = '17' } }" >> android/build.gradle
+          echo "subprojects { tasks.withType(JavaCompile) { options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'; sourceCompatibility = '17'; targetCompatibility = '17' } }" >> android/build.gradle
 
       - name: Compilar o APK de Producao Independente
         run: |
