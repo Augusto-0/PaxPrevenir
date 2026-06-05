@@ -1,0 +1,25 @@
+name: Gerar APK PAX PREVENIR
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-size: 20
+
+      - name: Configurar ferramentas do Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Compilar APK Android
+        run: npx expo export && npx eas build -p android --profile preview --local
