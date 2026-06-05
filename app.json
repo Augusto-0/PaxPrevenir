@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "PAX PREVENIR",
+    "slug": "pax-prevenir",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Precisamos da sua localização para capturar o GPS da residência",
+        "NSCameraUsageDescription": "Precisamos da câmera para tirar fotos da residência",
+        "NSPhotoLibraryUsageDescription": "Precisamos acessar sua galeria para adicionar fotos"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ],
+      "package": "com.pax.prevenir"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
