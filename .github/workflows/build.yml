@@ -3,40 +3,37 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
-      - name: Baixar codigo do projeto
-        uses: actions/checkout@v4
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Configurar Java
-        uses: actions/setup-java@v4
+          
+      - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
-
-      - name: Instalar dependencias na Raiz
+          
+      - name: Install dependencies
         run: npm install
 
       - name: Exportar Bundles de Producao do Expo
         run: npx expo export --platform android
-
-      - name: Gerar Estrutura Android Oficial
-        run: npx expo prebuild --platform android --no-install
-
-      - name: Compilar o APK de Producao Independente
+        
+      - name: Create keystore
         run: |
+          keytool -genkey -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=PAX, OU=PAX, O=PAX, L=PAX, ST=PAX, C=BR" -storepass password -keypass password
+          
+      - name: Build Android
+        run: |
+          npx expo prebuild --platform android --no-install
           cd android
           chmod +x gradlew
           ./gradlew assembleRelease
-
-      - name: Disponibilizar APK para Download
+          
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: App-PaxPrevenir-Instalavel
-          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+          name: app-release
+          path: android/app/build/outputs/apk/release/*.apk
